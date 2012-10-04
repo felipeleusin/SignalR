@@ -480,7 +480,6 @@
 
             try {
                 if (connection.transport) {
-                    notifyServer = false;
                     if (notifyServer !== false) {
                         connection.transport.abort(connection, async);
                     }
