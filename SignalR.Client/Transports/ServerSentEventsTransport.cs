@@ -43,9 +43,8 @@ namespace SignalR.Client.Transports
 
         public override void LostConnection(IConnection connection)
         {
-            // TaskAsyncHelper.Delay(TimeSpan.FromSeconds(1)).Then(() => { Stop(connection); }).Then(() => { Reconnect(connection, null); });
+            // Stopping the transport will force it into auto reconnect and maintain the functional flow
             Stop(connection);
-            Reconnect(connection, null);
         }
 
         private void Reconnect(IConnection connection, string data)
@@ -53,7 +52,6 @@ namespace SignalR.Client.Transports
             // Wait for a bit before reconnecting
             TaskAsyncHelper.Delay(ReconnectDelay).Then(() =>
             {
-                (connection.Items[EventSourceKey] as EventSourceStreamReader).Close();
                 if (connection.State == ConnectionState.Reconnecting ||
                     connection.ChangeState(ConnectionState.Connected, ConnectionState.Reconnecting))
                 {
@@ -168,7 +166,7 @@ namespace SignalR.Client.Transports
                         }
                         else
                         {
-                            connection.Stop();
+                            connection.Stop(false);
                         }
                     };
 

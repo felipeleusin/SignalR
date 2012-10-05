@@ -308,7 +308,7 @@ namespace SignalR.Client
         /// <summary>
         /// Stops the <see cref="Connection"/>.
         /// </summary>
-        public virtual void Stop()
+        public virtual void Stop(bool notifyServer = true)
         {
             try
             {
@@ -324,7 +324,7 @@ namespace SignalR.Client
                     _transport.StopMonitoringKeepAlive();
                 }
 
-                _transport.Stop(this);
+                _transport.Stop(this, notifyServer);
 
                 if (Closed != null)
                 {
