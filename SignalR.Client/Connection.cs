@@ -204,6 +204,7 @@ namespace SignalR.Client
 
             Task negotation = Negotiate(transport);
 
+            // Once the negotation has finished we need to check the keep alive
             negotation.ContinueWith(task =>
             {
                 // We've now determined if the client can support the keep alive so we need to monitor it if it does
@@ -212,7 +213,6 @@ namespace SignalR.Client
                     _transport.MonitorKeepAlive(this);
                 }
             });
-
 
             return negotation;
         }
